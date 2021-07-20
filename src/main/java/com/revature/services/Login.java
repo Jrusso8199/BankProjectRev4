@@ -43,7 +43,6 @@ public class Login {
 				user.setPassword(rs.getString(6));
 				user.setEmployee(rs.getBoolean(7));
 			}
-			System.out.println(user.toString());
 		return user;
 			
 		} catch(SQLException e) {

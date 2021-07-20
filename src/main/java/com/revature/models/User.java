@@ -1,6 +1,14 @@
 package com.revature.models;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import com.revature.services.ConnectionUtil;
+
 public class User {
+	private ConnectionUtil conUtil = ConnectionUtil.getConnectionUtil();
+	
 	private int userId;
 	private String firstName;
 	private String lastName;
@@ -103,7 +111,6 @@ public class User {
 		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", userName=" + userName + ", password=" + password + ", employee=" + employee + "]";
 	}
-	
 	
 	
 	

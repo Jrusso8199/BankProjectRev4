@@ -1,9 +1,13 @@
 package com.revature.main;
 
+import java.lang.invoke.SwitchPoint;
+import java.util.List;
 import java.util.Scanner;
 
+import com.revature.models.Account;
 import com.revature.models.User;
 import com.revature.services.Login;
+import com.revature.services.AccountSvc;
 
 public class Main {
 
@@ -37,12 +41,83 @@ public class Main {
 			default:
 				break;
 			}
-		}else {
-			System.out.println("doesn't work" + u.getUserId());
-			
 		}
 		
-		System.out.println(u.toString());
+		if (u.isEmployee()) {
+			System.out.println("Enter 1 to create an account, or 2 to display member accounts");
+			switch(sc.nextInt()) {
+			case 1:
+				AccountSvc.createAccount();
+				break;
+			case 2:
+				System.out.println("Please enter member number");
+//				AccountSvc.getUserAccounts(sc.nextInt());
+				List<Account> accnts = AccountSvc.getUserAccounts(sc.nextInt());
+				for(Account accnt: accnts) {
+					System.out.println("Account number " + accnt.getAccountNumber() + ":");
+					System.out.println("Balance " + accnt.getBalance());
+				} // end for loop
+				break;
+			} // end switch
+			
+			
+		} else {
+			boolean repeat1 = true;
+			
+			while(repeat1) {
+				
+				System.out.println("Enter 1 to view Accounts, 2 to transfer funds, 3 to quit");
+				List<Account> accnts = AccountSvc.getUserAccounts(u.getUserId());
+				switch (sc.nextInt()) {
+				case 1:
+					
+					for(Account accnt: accnts) {
+						System.out.println("Account number " + accnt.getAccountNumber() + ":");
+						System.out.println("Balance " + accnt.getBalance());
+					} // end for
+					break;
+				case 2:
+					boolean repeat = true;
+					
+					
+					while(repeat) {
+						System.out.println("which account would you like to transfer FROM?");
+						Account a = accnts.get(sc.nextInt());
+						System.out.println("Which account would you like to transfer TO?");
+						Account b = accnts.get(sc.nextInt());
+						int aBalance = a.getBalance();
+						int bBalance = b.getBalance();
+						
+						System.out.println("How much to transfer");
+						int amount = sc.nextInt();
+						if(amount > a.getBalance()) {
+							System.out.println("Please try a lower amount");
+						} else {
+							aBalance -= amount;
+							AccountSvc.updateBalance(a.getAccountNumber(), aBalance);
+							bBalance += amount;
+							AccountSvc.updateBalance(a.getAccountNumber(), bBalance);
+							System.out.println("Would you like to make another transfer? y/n");
+							if(sc.nextLine().toLowerCase() == "n") {
+								repeat = false;
+							}
+						}
+					
+					}
+				case 3:
+					repeat1 = false;
+					break;
+				default:
+					break;
+				}
+				
+			}
+			
+			
+			
+		} // end if
+		
+		System.out.println("End of the road");
 		
 		
 		
