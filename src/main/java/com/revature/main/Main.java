@@ -31,34 +31,44 @@ public class Main {
 		}
 		if(u.getUserId()==0) {
 			System.out.println("Username or password inccorect. Would you like to signup?:");
-			System.out.println("Press 1 for yes, 2 to try agian, any other key to quit");
+			System.out.println("Press 1 for yes, 2 to try agian, or 3 to quit");
 			switch (sc.nextInt()) {
 			case 1:
 				u = Login.signup();
 				break;
 			case 2:
 				u = Login.login();
+				break;
+			case 3:
+				System.out.println("Goodbye");
+				System.exit(0);
 			default:
 				break;
 			}
 		}
 		
 		if (u.isEmployee()) {
-			System.out.println("Enter 1 to create an account, or 2 to display member accounts");
-			switch(sc.nextInt()) {
-			case 1:
-				AccountSvc.createAccount();
-				break;
-			case 2:
-				System.out.println("Please enter member number");
-//				AccountSvc.getUserAccounts(sc.nextInt());
-				List<Account> accnts = AccountSvc.getUserAccounts(sc.nextInt());
-				for(Account accnt: accnts) {
-					System.out.println("Account number " + accnt.getAccountNumber() + ":");
-					System.out.println("Balance " + accnt.getBalance());
-				} // end for loop
-				break;
-			} // end switch
+			boolean repeat = true;
+			while(repeat) {
+				System.out.println("Enter 1 to create an account, 2 to display member accounts, 3 to quit");
+				switch(sc.nextInt()) {
+				case 1:
+					AccountSvc.createAccount();
+					break;
+				case 2:
+					System.out.println("Please enter member number");
+//					AccountSvc.getUserAccounts(sc.nextInt());
+					List<Account> accnts = AccountSvc.getUserAccounts(sc.nextInt());
+					for(Account accnt: accnts) {
+						System.out.println("Account number " + accnt.getAccountNumber() + ":");
+						System.out.println("Balance " + accnt.getBalance());
+					} // end for loop
+					break;
+				case 3:
+					repeat = false;					
+				} 
+			}
+			// end switch
 			
 			
 		} else {
@@ -66,7 +76,7 @@ public class Main {
 			
 			while(repeat1) {
 				
-				System.out.println("Enter 1 to view Accounts, 2 to transfer funds, 3 to make a deposit, 4 make a withdrawl, 5 to quit");
+				System.out.println("Enter 1 to view Accounts, 2 View account, 3 to make a deposit, 4 make a withdrawl, 5 to transfer between accounts, 6 to quit");
 				List<Account> accnts = AccountSvc.getUserAccounts(u.getUserId());
 				switch (sc.nextInt()) {
 				case 1:
@@ -77,7 +87,8 @@ public class Main {
 					} // end for
 					break;
 				case 2:
-					AccountSvc.transferMoney();
+					System.out.println("Please enter account number you wish to view");
+					AccountSvc.getAccountBalance(sc.nextInt());
 					break;
 				case 3:
 					System.out.println("Please select the account you wish to deposit into.");
@@ -104,6 +115,10 @@ public class Main {
 					
 					break;
 				case 5:
+					AccountSvc.transferMoney();
+					break;
+					
+				case 6:
 					repeat1 = false;
 					break;
 				default:

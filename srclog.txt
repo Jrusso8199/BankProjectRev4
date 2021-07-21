@@ -1,0 +1,1 @@
+2021-07-21 11:33:34 WARN  Logging:91 - Username created that already exists in the database

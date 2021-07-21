@@ -47,12 +47,13 @@ public class Login {
 				user.setPassword(rs.getString(6));
 				user.setEmployee(rs.getBoolean(7));
 			}
-		return user;
+//		return user;
 			
 		} catch(SQLException e) {
 			Logging.logger.warn("User tried loggging in that does not exist");
 			throw new UserDoesNotExistException();
 		}
+		return user;
 	}
 	
 	public static User signup() throws UserNameAlreadyExistsException{
@@ -90,9 +91,57 @@ public class Login {
 		} catch (SQLException e) {
 			Logging.logger.warn("Username created that already exists in the database");
 			throw new UserNameAlreadyExistsException();
-		}
+		} 
 	}
 	
+	User user = new User();
+	
+	
+
+	
+	public static User proposeAccount() {
+		
+		User user = new User();
+		int initialDeposit;
+		
+		System.out.println("Please enter your First Name:");
+		user.setFirstName(sc.nextLine());
+		System.out.println("Please enter your Last Name:");
+		user.setLastName(sc.nextLine());
+		System.out.println("Please enter your desired Username:");
+		user.setUserName(sc.nextLine());
+		System.out.println("Please enter your desired Password:");
+		user.setPassword(sc.nextLine());
+		System.out.println("Please enter your Email address:");
+		user.setEmail(sc.nextLine());
+		System.out.println("Please enter initial deposit amount");
+		initialDeposit = sc.nextInt();
+		
+		
+	try {
+		Connection con = conUtil.getConnection();
+		
+		String sql = "INSERT INTO proposed_users(first_name, last_name, email, username, password, initial_deposit) values"
+				+ "(?,?,?,?,?,?)";
+		PreparedStatement ps = con.prepareStatement(sql);
+		
+		ps.setString(1, user.getFirstName());
+		ps.setString(2, user.getLastName());
+		ps.setString(3, user.getEmail());
+		ps.setString(4, user.getUserName());
+		ps.setString(5, user.getPassword());
+		ps.setInt(6, initialDeposit);
+		
+		ps.execute();
+		
+		return user;
+		
+	} catch (SQLException e) {
+		Logging.logger.warn("Username created that already exists in the database");
+		throw new UserNameAlreadyExistsException();
+	}
+	
+}
 	
 	
 }
