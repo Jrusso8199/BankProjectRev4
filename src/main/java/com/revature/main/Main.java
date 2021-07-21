@@ -66,7 +66,7 @@ public class Main {
 			
 			while(repeat1) {
 				
-				System.out.println("Enter 1 to view Accounts, 2 to transfer funds, 3 to quit");
+				System.out.println("Enter 1 to view Accounts, 2 to transfer funds, 3 to make a deposit, 4 make a withdrawl, 5 to quit");
 				List<Account> accnts = AccountSvc.getUserAccounts(u.getUserId());
 				switch (sc.nextInt()) {
 				case 1:
@@ -77,34 +77,33 @@ public class Main {
 					} // end for
 					break;
 				case 2:
-					boolean repeat = true;
-					
-					
-					while(repeat) {
-						System.out.println("which account would you like to transfer FROM?");
-						Account a = accnts.get(sc.nextInt());
-						System.out.println("Which account would you like to transfer TO?");
-						Account b = accnts.get(sc.nextInt());
-						int aBalance = a.getBalance();
-						int bBalance = b.getBalance();
-						
-						System.out.println("How much to transfer");
-						int amount = sc.nextInt();
-						if(amount > a.getBalance()) {
-							System.out.println("Please try a lower amount");
-						} else {
-							aBalance -= amount;
-							AccountSvc.updateBalance(a.getAccountNumber(), aBalance);
-							bBalance += amount;
-							AccountSvc.updateBalance(a.getAccountNumber(), bBalance);
-							System.out.println("Would you like to make another transfer? y/n");
-							if(sc.nextLine().toLowerCase() == "n") {
-								repeat = false;
-							}
-						}
-					
-					}
+					AccountSvc.transferMoney();
+					break;
 				case 3:
+					System.out.println("Please select the account you wish to deposit into.");
+					int actNumber = sc.nextInt();
+					System.out.println("Enter the ammount you are depositing.");
+					int amnt = sc.nextInt();
+					if(amnt >= 0) {
+						AccountSvc.deposit(actNumber, amnt);
+					}else {
+						System.out.println("Please use positive whole numbers");
+					}
+					
+					break;
+				case 4:
+					System.out.println("Please select the account you wish to withdrawl from.");
+					int actNumber1 = sc.nextInt();
+					System.out.println("Enter the ammount you are withdrawling.");
+					int amnt1 = sc.nextInt();
+					if(amnt1 >= 0) {
+						AccountSvc.withdrawl(actNumber1, amnt1);
+					}else {
+						System.out.println("Please use whole amounts");
+					}
+					
+					break;
+				case 5:
 					repeat1 = false;
 					break;
 				default:
@@ -117,7 +116,7 @@ public class Main {
 			
 		} // end if
 		
-		System.out.println("End of the road");
+		System.out.println("Thank You. Goodbye");
 		
 		
 		

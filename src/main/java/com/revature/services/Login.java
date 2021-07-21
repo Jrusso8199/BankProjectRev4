@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import com.revature.exceptions.InvalidCredentialsException;
+import com.revature.exceptions.UserDoesNotExistException;
+import com.revature.exceptions.UserNameAlreadyExistsException;
+import com.revature.logging.Logging;
 import com.revature.models.User;
 
 public class Login {
@@ -15,7 +19,7 @@ public class Login {
 	static Scanner sc = new Scanner(System.in);
 	
 	
-	public static User login() {		
+	public static User login() throws UserDoesNotExistException, InvalidCredentialsException{		
 		
 		User user = new User();
 		
@@ -46,12 +50,12 @@ public class Login {
 		return user;
 			
 		} catch(SQLException e) {
-			e.printStackTrace();
+			Logging.logger.warn("User tried loggging in that does not exist");
+			throw new UserDoesNotExistException();
 		}
-		return null;
 	}
 	
-	public static User signup() {
+	public static User signup() throws UserNameAlreadyExistsException{
 		
 		User user = new User();
 		
@@ -84,12 +88,9 @@ public class Login {
 			return user;
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Logging.logger.warn("Username created that already exists in the database");
+			throw new UserNameAlreadyExistsException();
 		}
-		
-		
-		
-		return null;
 	}
 	
 	
